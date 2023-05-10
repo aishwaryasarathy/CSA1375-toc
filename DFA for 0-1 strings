@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <string.h>
+
+#define STATES 2
+
+int transition[STATES][2] = {{1, 0}, {1, 1}};  // transition table
+int start_state = 0;  // start state
+int final_state = 1;  // final state
+
+int main() {
+    char input[100];
+    int current_state = start_state;
+
+    printf("Enter an input string: ");
+    scanf("%s", input);
+
+    for (int i = 0; i < strlen(input); i++) {
+        int symbol = input[i] - '0';  // convert character to integer
+
+        current_state = transition[current_state][symbol];
+    }
+
+    if (current_state == final_state) {
+        printf("String is accepted by the DFA.\n");
+    } else {
+        printf("String is not accepted by the DFA.\n");
+    }
+
+    return 0;
+}
