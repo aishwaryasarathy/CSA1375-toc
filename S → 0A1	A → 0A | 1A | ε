@@ -1,0 +1,47 @@
+#include <stdio.h>
+#include <string.h>
+
+// Function to check whether a given string belongs to the language defined by the CFG
+int belongs_to_grammar(char str[]) {
+    int len = strlen(str);
+    int i = 0;
+
+    // Check if the string starts with a 0 and ends with a 1
+    if (str[0] == '0' && str[len-1] == '1') {
+        // Remove the starting 0 and ending 1 from the string
+        str[len-1] = '\0';
+        str++;
+
+        // Check if the remaining string belongs to the language defined by A → 0A | 1A | ε
+        if (strlen(str) == 0) {
+            return 1; // Empty string belongs to the language
+        } else if (str[0] == '0') {
+            return belongs_to_grammar(str+1); // Remove the starting 0 and continue checking
+        } else if (str[0] == '1') {
+            i = 1;
+            while (str[i] != '\0' && str[i] == '1') {
+                i++;
+            }
+            if (str[i] == '0') {
+                return belongs_to_grammar(str+i+1); // Remove the 1s and the following 0 and continue checking
+   }
+        }
+    }
+
+    return 0; // String does not belong to the language
+}
+
+int main() {
+    char str[100];
+
+    printf("Enter a string: ");
+    scanf("%s", str);
+
+    if (belongs_to_grammar(str)) {
+        printf("%s belongs to the language defined by the CFG.\n", str);
+    } else {
+        printf("%s does not belong to the language defined by the CFG.\n", str);
+    }
+
+    return 0;
+}
